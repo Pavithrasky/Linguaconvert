@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinguaConvert | Language Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="page-overlay"></div>
+    <header class="container py-4 position-relative z-2">
+        <nav class="navbar navbar-expand-lg custom-nav rounded-4 px-4 py-3">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                <div class="brand-mark">🌐</div>
+                <div>
+                    <div class="brand-title">LinguaConvert</div>
+                    <div class="brand-subtitle">Connect. Understand. Translate.</div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTabs">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarTabs">
+                <ul class="nav nav-pills gap-2" id="mainTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="about-tab" data-bs-toggle="pill" data-bs-target="#about" type="button" role="tab">About</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="convert-tab" data-bs-toggle="pill" data-bs-target="#convert" type="button" role="tab">Convert (From → To)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#contact" type="button" role="tab">Contact Us</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container pb-5 position-relative z-2">
+        <section class="hero text-center px-3 py-4 py-lg-5">
+            <span class="hero-pill">Global language bridge built in Python</span>
+            <h1 class="display-4 fw-bold mt-3">Break language barriers beautifully.</h1>
+            <p class="lead mx-auto hero-copy">Translate ideas across borders with a clean, globe-ready web experience designed for clarity, trust, and speed.</p>
+        </section>
+
+        <div class="tab-content">
+            <section class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <div class="glass-card p-4 p-lg-5">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-7">
+                            <h2 class="section-title">About LinguaConvert</h2>
+                            <p>LinguaConvert is a modern language conversion website built with <strong>Python + Flask</strong>. It turns your text from one language into another using a production-ready translation API, with a calm visual design that symbolizes global understanding.</p>
+                            <div class="feature-grid mt-4">
+                                <div class="feature-box">
+                                    <h3>Meaningful design</h3>
+                                    <p>The background artwork uses a world-inspired visual to represent connection, travel, culture, and communication.</p>
+                                </div>
+                                <div class="feature-box">
+                                    <h3>Production-friendly</h3>
+                                    <p>The app is structured for cloud deployment, environment variables, and a proper Python web server.</p>
+                                </div>
+                                <div class="feature-box">
+                                    <h3>Simple navigation</h3>
+                                    <p>Three clear tabs keep the experience intuitive: About, Convert, and Contact Us.</p>
+                                </div>
+                                <div class="feature-box">
+                                    <h3>Global-ready</h3>
+                                    <p>Prepared for deployment to cloud hosting with scalable translation services and secure configuration.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="quote-panel">
+                                <p class="quote">“Every translated sentence is a bridge between people.”</p>
+                                <div class="hello-cloud">
+                                    <span>Hello</span>
+                                    <span>Bonjour</span>
+                                    <span>Hola</span>
+                                    <span>नमस्ते</span>
+                                    <span>こんにちは</span>
+                                    <span>مرحبًا</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-pane fade" id="convert" role="tabpanel" aria-labelledby="convert-tab">
+                <div class="glass-card p-4 p-lg-5">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <h2 class="section-title text-center">Convert text instantly</h2>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="form-label" for="fromLanguage">From</label>
+                            <select class="form-select form-select-lg" id="fromLanguage">
+                                {% for code, name in languages.items() %}
+                                    <option value="{{ code }}" {% if code == 'en' %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end justify-content-center">
+                            <button class="swap-btn" id="swapLanguages" type="button" title="Swap languages">⇄</button>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="form-label" for="toLanguage">To</label>
+                            <select class="form-select form-select-lg" id="toLanguage">
+                                {% for code, name in languages.items() %}
+                                    <option value="{{ code }}" {% if code == 'es' %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="sourceText">Enter text</label>
+                            <textarea id="sourceText" class="form-control text-panel" maxlength="5000" placeholder="Type or paste the text you want to translate..."></textarea>
+                            <div class="text-end small text-muted mt-2"><span id="charCount">0</span>/5000</div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="translatedText">Translated output</label>
+                            <textarea id="translatedText" class="form-control text-panel" readonly placeholder="Your translated text will appear here..."></textarea>
+                            <div class="d-flex justify-content-end gap-2 mt-2">
+                                <button class="btn btn-outline-light action-btn" type="button" id="copyOutput">Copy</button>
+                                <button class="btn btn-outline-light action-btn" type="button" id="clearAll">Clear</button>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center mt-2">
+                            <button class="btn btn-primary btn-lg px-5 translate-btn" id="translateBtn" type="button">Translate</button>
+                        </div>
+                        <div class="col-12">
+                            <div id="translateMessage" class="alert d-none mt-3" role="alert"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="glass-card p-4 p-lg-5">
+                    <div class="row g-5">
+                        <div class="col-lg-5">
+                            <h2 class="section-title">Contact Us</h2>
+                            <p>Want a custom translation workflow, branded experience, or enterprise integration? Send us a message and we’ll capture your request.</p>
+                            <div class="contact-highlights">
+                                <div><strong>Email:</strong> hello@linguaconvert.example</div>
+                                <div><strong>Hours:</strong> Monday – Friday, 9:00 AM – 6:00 PM</div>
+                                <div><strong>Focus:</strong> UX, translation workflows, cloud-ready deployment</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="contact-panel">
+                                <div class="mb-3">
+                                    <label class="form-label" for="contactName">Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="contactName" placeholder="Your name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="contactEmail">Email</label>
+                                    <input type="email" class="form-control form-control-lg" id="contactEmail" placeholder="you@example.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="contactMessage">Message</label>
+                                    <textarea class="form-control text-panel" id="contactMessage" placeholder="Tell us what you need..."></textarea>
+                                </div>
+                                <button id="sendMessage" class="btn btn-primary btn-lg px-4 translate-btn" type="button">Send Message</button>
+                                <div id="contactStatus" class="alert d-none mt-3" role="alert"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="container pb-4 position-relative z-2">
+        <div class="footer-shell text-center">
+            <span>© 2026 LinguaConvert</span>
+            <span>Built with Python, Flask, and a global-first design.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
